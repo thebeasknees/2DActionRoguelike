@@ -6,12 +6,12 @@ public class CharacterMovement : CharacterAbilities
 {
     [SerializeField] private float walkSpeed = 6f;
 
-    public float walkMoveSpeed { get; set; }
+    public float MoveSpeed { get; set; }
 
     protected override void Start()
     {
         base.Start();
-        walkMoveSpeed = walkSpeed;
+        MoveSpeed = walkSpeed;
     }
 
     protected override void HandleAbility()
@@ -24,7 +24,12 @@ public class CharacterMovement : CharacterAbilities
     {
         Vector2 movement = new Vector2(horizontalInput, verticalInput);
         Vector2 movementNormalized = movement.normalized;
-        Vector2 movementSpeed = movementNormalized * walkMoveSpeed;
+        Vector2 movementSpeed = movementNormalized * MoveSpeed;
         controller.SetMovement(movementSpeed);
+    }
+
+    public void ResetSpeed()
+    {
+        MoveSpeed = walkSpeed;
     }
 }

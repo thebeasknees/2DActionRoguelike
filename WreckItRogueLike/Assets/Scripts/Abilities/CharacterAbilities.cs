@@ -8,11 +8,13 @@ public class CharacterAbilities : MonoBehaviour
     protected float verticalInput;
 
     protected CharacterController controller;
+    protected CharacterMovement characterMovement;
 
     // Start is called before the first frame update
     protected virtual void Start()
     {
         controller = GetComponent<CharacterController>();
+        characterMovement = GetComponent<CharacterMovement>();
     }
 
     // Update ability being used
@@ -25,6 +27,7 @@ public class CharacterAbilities : MonoBehaviour
     protected virtual void HandleAbility()
     {
         InternalInput();
+        HandleInput();
     }
 
     // Receive needed input to perform ability

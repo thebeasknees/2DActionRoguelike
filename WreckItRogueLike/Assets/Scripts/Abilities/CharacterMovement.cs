@@ -8,6 +8,8 @@ public class CharacterMovement : CharacterAbilities
 
     public float MoveSpeed { get; set; }
 
+    private readonly int movingParameter = Animator.StringToHash("Moving");
+
     protected override void Start()
     {
         base.Start();
@@ -18,6 +20,7 @@ public class CharacterMovement : CharacterAbilities
     {
         base.HandleAbility();
         MoveCharacter();
+        UpdateAnimations();
     }
 
     private void MoveCharacter()
@@ -26,6 +29,18 @@ public class CharacterMovement : CharacterAbilities
         Vector2 movementNormalized = movement.normalized;
         Vector2 movementSpeed = movementNormalized * MoveSpeed;
         controller.SetMovement(movementSpeed);
+    }
+
+    private void UpdateAnimations()
+    {
+        if(Mathf.Abs(horizontalInput) > 0.1f || Mathf.Abs(verticalInput) > 0.1f)
+        {
+            animator.SetBool(movingParameter, true);
+        }
+        else
+        {
+            animator.SetBool(movingParameter, false);
+        }
     }
 
     public void ResetSpeed()

@@ -8,6 +8,10 @@ public class Health : MonoBehaviour
     [SerializeField] private float initialHealth = 10f;
     [SerializeField] private float maxHealth = 10f;
 
+    [Header("Shield")]
+    [SerializeField] private float initialShield = 5f;
+    [SerializeField] private float maxShield = 5f;
+
     [Header("Settings")]
     [SerializeField] private bool destroyObject;
 
@@ -16,8 +20,13 @@ public class Health : MonoBehaviour
     private Collider2D collider2D;
     private SpriteRenderer spriteRenderer;
 
+    private bool shieldBroken;
+
     // Controls current health of object
     public float CurrentHealth { get; set; }
+
+    // Controls current shield of object
+    public float CurrentShield { get; set; }
 
     private void Awake()
     {
@@ -27,7 +36,8 @@ public class Health : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         CurrentHealth = initialHealth;
-        UIManager.Instance.UpdateHealth(CurrentHealth, maxHealth);
+        CurrentShield = initialShield;
+        UIManager.Instance.UpdateHealth(CurrentHealth, maxHealth, CurrentShield, maxShield);
     }
 
     private void Update()
@@ -46,8 +56,19 @@ public class Health : MonoBehaviour
             return;
         }
 
+        if (!shieldBroken && character != null)
+        {
+            CurrentShield -= damage;
+            UIManager.Instance.UpdateHealth(CurrentHealth, maxHealth, CurrentShield, maxShield);
+            if (CurrentShield <= 0)
+            {
+                shieldBroken = true;
+            }
+            return;
+        }
+
         CurrentHealth -= damage;
-        UIManager.Instance.UpdateHealth(CurrentHealth, maxHealth);
+        UIManager.Instance.UpdateHealth(CurrentHealth, maxHealth, CurrentShield, maxShield);
 
         if(CurrentHealth <= 0)
         {
@@ -86,9 +107,11 @@ public class Health : MonoBehaviour
         }
 
         gameObject.SetActive(true);
-
+        shieldBroken = false;
         CurrentHealth = initialHealth;
-        UIManager.Instance.UpdateHealth(CurrentHealth, maxHealth);
+        CurrentShield = initialShield;
+
+        UIManager.Instance.UpdateHealth(CurrentHealth, maxHealth, CurrentShield, maxShield);
     }
 
     // Destroys our object

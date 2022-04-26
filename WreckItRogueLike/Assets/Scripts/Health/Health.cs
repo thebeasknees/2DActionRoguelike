@@ -27,6 +27,7 @@ public class Health : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         CurrentHealth = initialHealth;
+        UIManager.Instance.UpdateHealth(CurrentHealth, maxHealth);
     }
 
     private void Update()
@@ -46,6 +47,7 @@ public class Health : MonoBehaviour
         }
 
         CurrentHealth -= damage;
+        UIManager.Instance.UpdateHealth(CurrentHealth, maxHealth);
 
         if(CurrentHealth <= 0)
         {
@@ -86,6 +88,7 @@ public class Health : MonoBehaviour
         gameObject.SetActive(true);
 
         CurrentHealth = initialHealth;
+        UIManager.Instance.UpdateHealth(CurrentHealth, maxHealth);
     }
 
     // Destroys our object
